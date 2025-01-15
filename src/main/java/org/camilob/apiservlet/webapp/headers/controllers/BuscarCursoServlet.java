@@ -13,15 +13,18 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-@WebServlet("/buscarCurso")
+@WebServlet("/cursos/buscar")
 public class BuscarCursoServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String nombreCurso = req.getParameter("nombre");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = (Connection) req.getAttribute("conn");
-        CursoService cursoService = new CursoServiceImpl(conn);
-        List<Curso> cursos = cursoService.porNombre(nombreCurso);
+        CursoService service = new CursoServiceImpl(conn);
+        String nombre = req.getParameter("nombre");
+
+        List<Curso> cursos = service.porNombre(nombre);
+
+        req.setAttribute("titulo", "Tarea 9: filtrando cursos");
         req.setAttribute("cursos", cursos);
         getServletContext().getRequestDispatcher("/listar.jsp").forward(req, resp);
     }

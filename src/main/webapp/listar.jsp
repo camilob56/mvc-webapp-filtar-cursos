@@ -45,7 +45,7 @@
 
 <h1>Tarea 9: Filtrando Cursos</h1>
 
-<form action="/webapp-bbdd-tarea9/buscarCurso" method="get">
+<form action="<%=request.getContextPath()%>/cursos/buscar" method="post">
     <label for="buscar">Buscar por nombre:</label>
     <input type="text" id="buscar" name="nombre" placeholder="Introduce nombre del curso" />
     <button type="submit">Buscar</button>

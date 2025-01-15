@@ -17,7 +17,7 @@ public class CursoRepositorioImpl implements Repository<Curso>{
     @Override
     public List<Curso> listar() throws SQLException {
         List<Curso> cursos = new ArrayList<>();
-        String sql = "SELECT id, nombre, descripcion, instructor, duracion FROM cursos";
+        String sql = "SELECT * FROM cursos as c";
 
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -34,8 +34,8 @@ public class CursoRepositorioImpl implements Repository<Curso>{
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del curso no puede ser nulo o vacío.");
         }
-        String sql = "SELECT id, nombre, descripcion, instructor, duracion FROM cursos WHERE nombre LIKE ?";
         List<Curso> cursos = new ArrayList<>();
+        String sql = "SELECT * FROM cursos as c WHERE c.nombre like ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + nombre + "%");

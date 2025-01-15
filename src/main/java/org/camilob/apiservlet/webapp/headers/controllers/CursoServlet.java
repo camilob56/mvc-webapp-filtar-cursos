@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-@WebServlet({"/cursos.html", "/cursos", ""})
+@WebServlet({"/index.html", "/cursos"})
 public class CursoServlet extends HttpServlet {
 
     @Override
