@@ -1,9 +1,5 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"
-import="java.util.*, org.camilob.apiservlet.webapp.headers.models.*" %>
-<%
-    Map<String, String> errores = (Map<String, String>) request.getAttribute("errores");
-    Curso curso = (Curso) request.getAttribute("curso");
-%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,53 +92,50 @@ import="java.util.*, org.camilob.apiservlet.webapp.headers.models.*" %>
 <body>
 <div class="container">
     <h1>Formulario de cursos</h1>
-    <form action="<%=request.getContextPath()%>/cursos/form" method="post">
+    <form action="${pageContext.request.contextPath}/cursos/form" method="post">
         <div>
             <label for="nombre">Nombre:</label>
             <div>
-                <input type="text" id="nombre" name="nombre"
-                       value="<%= curso != null && curso.getNombre() != null ? curso.getNombre() : "" %>">
+                <input type="text" id="nombre" name="nombre" value="${curso.nombre != null ? curso.nombre : ''}">
             </div>
-            <% if (errores != null && errores.containsKey("nombre")) { %>
-            <div class="error"><%=errores.get("nombre")%></div>
-            <% } %>
+            <c:if test="${errores != null && errores.nombre != null}">
+                <div class="error">${errores.nombre}</div>
+            </c:if>
         </div>
         <div>
             <label for="descripcion">Descripción:</label>
             <div>
-                <input type="text" id="descripcion" name="descripcion"
-                       value="<%= curso != null && curso.getDescripcion() != null ? curso.getDescripcion() : "" %>">
+                <input type="text" id="descripcion" name="descripcion" value="${curso.descripcion != null ? curso.descripcion : ''}">
             </div>
-            <% if (errores != null && errores.containsKey("descripcion")) { %>
-            <div class="error"><%=errores.get("descripcion")%></div>
-            <% } %>
+            <c:if test="${errores != null && errores.descripcion != null}">
+                <div class="error">${errores.descripcion}</div>
+            </c:if>
         </div>
         <div>
             <label for="instructor">Instructor:</label>
             <div>
-                <input type="text" id="instructor" name="instructor"
-                       value="<%= curso != null && curso.getInstructor() != null ? curso.getInstructor() : "" %>">
+                <input type="text" id="instructor" name="instructor" value="${curso.instructor != null ? curso.instructor : ''}">
             </div>
-            <% if (errores != null && errores.containsKey("instructor")) { %>
-            <div class="error"><%=errores.get("instructor")%></div>
-            <% } %>
+            <c:if test="${errores != null && errores.instructor != null}">
+                <div class="error">${errores.instructor}</div>
+            </c:if>
         </div>
         <div>
             <label for="duracion">Duración:</label>
             <div>
-                <input type="text" name="duracion" id="duracion" value="<%= curso.getDuracion() != 0 ? curso.getDuracion() : "" %>">
+                <input type="text" name="duracion" id="duracion" value="${curso.duracion != 0 ? curso.duracion : ''}">
             </div>
-            <% if (errores != null && errores.containsKey("duracion")) { %>
-            <div class="error"><%=errores.get("duracion")%></div>
-            <% } %>
+            <c:if test="${errores != null && errores.duracion != null}">
+                <div class="error">${errores.duracion}</div>
+            </c:if>
         </div>
         <div>
-            <input type="submit" value="<%=(curso.getId() != null && curso.getId()>0)? "Editar": "Guardar"%>">
+            <input type="submit" value="${curso.id != null && curso.id > 0 ? 'Editar' : 'Guardar'}">
         </div>
         <div>
-            <a href="http://localhost:8080/webapp-bbdd-tarea9/" class="volver-button">Volver</a>
+            <a href="${pageContext.request.contextPath}" class="volver-button">Volver</a>
         </div>
-        <input type="hidden" name="id" value="<%=curso.getId()%>">
+        <input type="hidden" name="id" value="${curso.id}">
     </form>
 </div>
 </body>

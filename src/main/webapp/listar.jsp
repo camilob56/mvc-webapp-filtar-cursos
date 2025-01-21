@@ -1,8 +1,6 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8" import="org.camilob.apiservlet.webapp.headers.models.*" %>
-<%@ page import="java.util.List" %>
-<%
-    List<Curso> cursos = (List<Curso>) request.getAttribute("cursos");
-%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -76,12 +74,12 @@
 
 <h1>Filtrador de Cursos</h1>
 
-<form action="<%=request.getContextPath()%>/cursos/buscar" method="post">
+<form action="${pageContext.request.contextPath}/cursos/buscar" method="post">
     <input type="text" id="buscar" name="nombre" placeholder="Introduce nombre del curso"/>
     <button class="button" type="submit">Buscar</button>
 </form>
 <p>
-    <a href="<%=request.getContextPath()%>/cursos/form" class="button button-blue">Crear [+]</a>
+    <a href="${pageContext.request.contextPath}/cursos/form" class="button button-blue">Crear [+]</a>
 </p>
 <h2>Tabla de Cursos</h2>
 <table>
@@ -92,45 +90,38 @@
         <th>Descripción</th>
         <th>Instructor</th>
         <th>Duración (horas)</th>
+        <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
-    <%
-        if (cursos != null && !cursos.isEmpty()) {
-            for (Curso curso : cursos) {
-    %>
-    <tr>
-        <td><%= curso.getId() %>
-        </td>
-        <td><%= curso.getNombre() %>
-        </td>
-        <td><%= curso.getDescripcion() %>
-        </td>
-        <td><%= curso.getInstructor() %>
-        </td>
-        <td><%= curso.getDuracion() %>
-        </td>
-        <td>
-            <a href="<%=request.getContextPath()%>/cursos/form?id=<%=curso.getId()%>" class="button">Editar</a>
-        </td>
-        <td>
-            <a href="<%=request.getContextPath()%>/cursos/eliminar?id=<%=curso.getId()%>"
-               class="button button-danger"
-               onclick="return confirm('¿Está seguro que desea eliminar?');">
-                Eliminar
-            </a>
-        </td>
-    </tr>
-    <%
-        }
-    } else {
-    %>
-    <tr>
-        <td colspan="4">No se encontraron cursos.</td>
-    </tr>
-    <%
-        }
-    %>
+    <c:choose>
+        <c:when test="${not empty cursos}">
+            <c:forEach var="curso" items="${cursos}">
+                <tr>
+                    <td>${curso.id}</td>
+                    <td>${curso.nombre}</td>
+                    <td>${curso.descripcion}</td>
+                    <td>${curso.instructor}</td>
+                    <td>${curso.duracion}</td>
+                    <td>
+                        <div style="display: flex; gap: 10px;">
+                            <a href="${pageContext.request.contextPath}/cursos/form?id=${curso.id}" class="button">Editar</a>
+                            <a href="${pageContext.request.contextPath}/cursos/eliminar?id=${curso.id}"
+                               class="button button-danger"
+                               onclick="return confirm('¿Está seguro que desea eliminar?');">
+                                Eliminar
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <tr>
+                <td colspan="6">No se encontraron cursos.</td>
+            </tr>
+        </c:otherwise>
+    </c:choose>
     </tbody>
 </table>
 
